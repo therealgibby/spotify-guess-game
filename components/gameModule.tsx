@@ -19,8 +19,10 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	const playNextTrack = useCallback(() => {
 		if (player) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.nextTrack().then(() => {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				player.setVolume(0);
 			});
@@ -33,6 +35,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	function seekCurrentTrack(track: WebPlaybackTrack) {
 		if (player && track) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.seek(
 				Math.floor(Math.random() * (track.duration_ms - 30000))
@@ -55,12 +58,15 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 		);
 		document.body.appendChild(spotifyScript);
 
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			const token = `${accessToken}`;
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			const player = new Spotify.Player({
 				name: "Web Playback SDK Quick Start Player",
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				getOAuthToken: (cb) => {
 					cb(token);
@@ -68,6 +74,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				volume: 0.05,
 			});
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.addListener("ready", ({ device_id }) => {
 				console.log("Ready with Device ID", device_id);
@@ -93,21 +100,25 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				}
 			);
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.addListener("not_ready", ({ device_id }) => {
 				console.log("Device ID has gone offline", device_id);
 			});
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.addListener("initialization_error", ({ message }) => {
 				console.error(message);
 			});
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.addListener("authentication_error", ({ message }) => {
 				console.error(message);
 			});
 
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			player.addListener("account_error", ({ message }) => {
 				console.error(message);
@@ -118,11 +129,13 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 			setPlayer(player);
 
 			// so the cleanup function can access the player
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			window.player = player;
 		};
 
 		return () => {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			window.player.disconnect();
 		};
