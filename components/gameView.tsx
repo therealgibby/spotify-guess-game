@@ -93,7 +93,7 @@ export default function GameView({
 		if (songsPlayed > 20) {
 			router.push(`/`);
 		}
-	}, [songsPlayed]);
+	}, [songsPlayed, router]);
 
 	return (
 		<div className="w-[300px] flex flex-col justify-center items-center">

@@ -19,9 +19,9 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	const playNextTrack = useCallback(() => {
 		if (player) {
-			// @ts-expect-error
+			// @ts-ignore
 			player.nextTrack().then(() => {
-				// @ts-expect-error
+				// @ts-ignore
 				player.setVolume(0);
 			});
 		}
@@ -33,7 +33,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	function seekCurrentTrack(track: WebPlaybackTrack) {
 		if (player && track) {
-			// @ts-expect-error
+			// @ts-ignore
 			player.seek(
 				Math.floor(Math.random() * (track.duration_ms - 30000))
 			);
@@ -55,20 +55,20 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 		);
 		document.body.appendChild(spotifyScript);
 
-		// @ts-expect-error
+		// @ts-ignore
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			const token = `${accessToken}`;
-			// @ts-expect-error
+			// @ts-ignore
 			const player = new Spotify.Player({
 				name: "Web Playback SDK Quick Start Player",
-				// @ts-expect-error
+				// @ts-ignore
 				getOAuthToken: (cb) => {
 					cb(token);
 				},
 				volume: 0.05,
 			});
 
-			// @ts-expect-error
+			// @ts-ignore
 			player.addListener("ready", ({ device_id }) => {
 				console.log("Ready with Device ID", device_id);
 				player.getCurrentState().then((state: WebPlaybackState) => {
@@ -93,22 +93,22 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				}
 			);
 
-			// @ts-expect-error
+			// @ts-ignore
 			player.addListener("not_ready", ({ device_id }) => {
 				console.log("Device ID has gone offline", device_id);
 			});
 
-			// @ts-expect-error
+			// @ts-ignore
 			player.addListener("initialization_error", ({ message }) => {
 				console.error(message);
 			});
 
-			// @ts-expect-error
+			// @ts-ignore
 			player.addListener("authentication_error", ({ message }) => {
 				console.error(message);
 			});
 
-			// @ts-expect-error
+			// @ts-ignore
 			player.addListener("account_error", ({ message }) => {
 				console.error(message);
 			});
@@ -118,12 +118,12 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 			setPlayer(player);
 
 			// so the cleanup function can access the player
-			// @ts-expect-error
+			// @ts-ignore
 			window.player = player;
 		};
 
 		return () => {
-			// @ts-expect-error
+			// @ts-ignore
 			window.player.disconnect();
 		};
 	}, [accessToken, playlistURI]);
