@@ -11,15 +11,6 @@ interface Props {
 	albumImageUrl: string;
 }
 
-/* 
-	start timeout on every new song
-	if guessed right then cancel the timeout
-
-	when a timeout is called i get the id used for stopping it
-	i need to start in 1 function and stop in another function
-	state?
-*/
-
 export default function GameView({
 	trackName,
 	playNextTrack,
@@ -72,7 +63,7 @@ export default function GameView({
 		return () => clearInterval(intervalId);
 	}, [timeLeft]);
 
-	// runs to start the next guess if the user didnt guess
+	// runs to start the next guess if the user didn't guess
 	useEffect(() => {
 		incrementSongsPlayed(trackName);
 		setCurrentTrackName(trackName);
