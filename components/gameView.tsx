@@ -102,11 +102,11 @@ export default function GameView({
 				<>
 					{timeLeft < 10 ? (
 						<span className="font-semibold text-[18px] text-fadedText mb-[8px]">
-							0:0{timeLeft}
+							0:0{`${timeLeft}`}
 						</span>
 					) : (
 						<span className="font-semibold text-[18px] text-fadedText mb-[8px]">
-							0:{timeLeft}
+							0:{`${timeLeft}`}
 						</span>
 					)}
 				</>
@@ -124,21 +124,21 @@ export default function GameView({
 						alt="album image of the song playing"
 					/>
 					<p className="font-semibold text-[20px] text-nowrap text-center">
-						{trackName}
+						{`${trackName}`}
 					</p>
 				</>
 			) : (
 				<p className="font-semibold text-[20px] text-nowrap text-center mt-[320px]">
-					{getTrackBlanks(trackName)}
+					{getTrackBlanks(`${trackName}`)}
 				</p>
 			)}
 			{trackName ? (
 				<span className="font-semibold text-[18px] mt-[32px] mb-[8px]">
-					Song: {songsPlayed}/20
+					Song: {`${songsPlayed}`}/20
 				</span>
 			) : (
 				<span className="font-semibold text-[18px] mt-[62px] mb-[8px]">
-					Song: {songsPlayed}/20
+					Song: {`${songsPlayed}`}/20
 				</span>
 			)}
 			<input
@@ -150,7 +150,7 @@ export default function GameView({
 				}}
 			/>
 			<span className="font-semibold text-[18px] mt-[12px]">
-				Score: {score}/20
+				Score: {`${score}`}/20
 			</span>
 		</div>
 	);

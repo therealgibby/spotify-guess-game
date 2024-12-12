@@ -174,9 +174,9 @@ async function startPlaylist(
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			device_id: deviceId,
-			access_token: accessToken,
-			playlist_uri: playlistURI,
+			device_id: `${deviceId}`,
+			access_token: `${accessToken}`,
+			playlist_uri: `${playlistURI}`,
 		}),
 	});
 
