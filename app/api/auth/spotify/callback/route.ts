@@ -30,7 +30,8 @@ export async function GET(request: NextRequest): Promise<Response> {
 	let tokens: OAuth2Tokens;
 	try {
 		tokens = await spotify.validateAuthorizationCode(code);
-	} catch (e) {
+	} catch (error) {
+		console.log(error);
 		// Invalid code or client credentials
 		return new Response(null, {
 			status: 400,

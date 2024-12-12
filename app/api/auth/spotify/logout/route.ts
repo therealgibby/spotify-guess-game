@@ -4,9 +4,8 @@ import {
 	invalidateSession,
 } from "@/lib/mongoose/auth";
 import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST() {
 	const { session } = await getCurrentSession();
 	if (!session) {
 		return redirect("/forbidden");

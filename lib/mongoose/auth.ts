@@ -51,7 +51,7 @@ export async function validateSessionToken(
 		sha256(new TextEncoder().encode(token))
 	);
 
-	let result: { user: IUser | null; session: ISession | null } = {
+	const result: { user: IUser | null; session: ISession | null } = {
 		user: null,
 		session: null,
 	};

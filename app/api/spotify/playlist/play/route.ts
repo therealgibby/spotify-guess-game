@@ -8,9 +8,6 @@ type RequestJson = {
 	playlist_uri: string;
 };
 
-const sleep = (delay: number) =>
-	new Promise((resolve) => setTimeout(resolve, delay));
-
 export async function POST(request: NextRequest): Promise<Response> {
 	const { user, session } = await getCurrentSession();
 	if (!user || !session) {
@@ -71,6 +68,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
 		return new Response(null, { status: 200 });
 	} catch (error) {
+		console.log(error);
 		return new Response(null, { status: 500 });
 	}
 }

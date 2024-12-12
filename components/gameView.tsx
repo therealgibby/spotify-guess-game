@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 interface Props {
 	trackName: string;
 	playNextTrack: () => void;
-	setShowTrackName: (showTrackName: boolean) => void;
+	setShowTrackNameTrue: () => void;
 	showTrackName: boolean;
 	albumImageUrl: string;
 }
@@ -14,7 +14,7 @@ interface Props {
 export default function GameView({
 	trackName,
 	playNextTrack,
-	setShowTrackName,
+	setShowTrackNameTrue,
 	showTrackName,
 	albumImageUrl,
 }: Props) {
@@ -35,7 +35,7 @@ export default function GameView({
 		) {
 			clearTimeout(timeoutFunctionId);
 			setIsGuessingPaused(true);
-			setShowTrackName(true);
+			setShowTrackNameTrue();
 			setScore(score + 1);
 			setInput("");
 
@@ -65,13 +65,15 @@ export default function GameView({
 
 	// runs to start the next guess if the user didn't guess
 	useEffect(() => {
-		incrementSongsPlayed(trackName);
+		if (trackName) {
+			setSongsPlayed(songsPlayed + 1);
+		}
 		setCurrentTrackName(trackName);
 		setTimeLeft(20);
 		if (trackName) {
 			const timeoutFuncId = setTimeout(() => {
 				setIsGuessingPaused(true);
-				setShowTrackName(true);
+				setShowTrackNameTrue();
 
 				setTimeout(() => {
 					playNextTrack();
@@ -85,13 +87,7 @@ export default function GameView({
 
 			setTimeoutFunctionId(timeoutFuncId as unknown as number);
 		}
-	}, [trackName]);
-
-	function incrementSongsPlayed(trackName: string) {
-		if (currentTrackName !== trackName) {
-			setSongsPlayed(songsPlayed + 1);
-		}
-	}
+	}, [trackName, playNextTrack, setShowTrackNameTrue]);
 
 	useEffect(() => {
 		if (songsPlayed > 20) {
@@ -178,6 +174,7 @@ function cleanTrackName(trackName: string, isForGuess = false): string {
 			trackName.includes("with") ||
 			trackName.includes("radio") ||
 			trackName.includes("edit") ||
+			trackName.includes("mix") ||
 			trackName.includes("version")) &&
 		trackName.includes("-")
 	) {

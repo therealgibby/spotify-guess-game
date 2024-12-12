@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GameView from "./gameView";
 
 interface Props {
@@ -17,19 +17,23 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 	const [showTrackName, setShowTrackName] = useState(false);
 	const playlistURI = getPlaylistURI(playlistLink);
 
-	function playNextTrack() {
+	const playNextTrack = useCallback(() => {
 		if (player) {
-			// @ts-ignore
+			// @ts-expect-error
 			player.nextTrack().then(() => {
-				// @ts-ignore
+				// @ts-expect-error
 				player.setVolume(0);
 			});
 		}
-	}
+	}, [player]);
+
+	const setShowTrackNameTrue = useCallback(() => {
+		setShowTrackName(true);
+	}, [setShowTrackName]);
 
 	function seekCurrentTrack(track: WebPlaybackTrack) {
 		if (player && track) {
-			// @ts-ignore
+			// @ts-expect-error
 			player.seek(
 				Math.floor(Math.random() * (track.duration_ms - 30000))
 			);
@@ -51,24 +55,23 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 		);
 		document.body.appendChild(spotifyScript);
 
-		// @ts-ignore
+		// @ts-expect-error
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			const token = `${accessToken}`;
-			// @ts-ignore
+			// @ts-expect-error
 			const player = new Spotify.Player({
 				name: "Web Playback SDK Quick Start Player",
-				// @ts-ignore
+				// @ts-expect-error
 				getOAuthToken: (cb) => {
 					cb(token);
 				},
 				volume: 0.05,
 			});
 
-			// Ready
-			// @ts-ignore
+			// @ts-expect-error
 			player.addListener("ready", ({ device_id }) => {
 				console.log("Ready with Device ID", device_id);
-				player.getCurrentState().then((state: any) => {
+				player.getCurrentState().then((state: WebPlaybackState) => {
 					if (!state?.track_window) {
 						startPlaylist(device_id, accessToken, playlistURI);
 					}
@@ -90,23 +93,22 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				}
 			);
 
-			// Not Ready
-			// @ts-ignore
+			// @ts-expect-error
 			player.addListener("not_ready", ({ device_id }) => {
 				console.log("Device ID has gone offline", device_id);
 			});
 
-			// @ts-ignore
+			// @ts-expect-error
 			player.addListener("initialization_error", ({ message }) => {
 				console.error(message);
 			});
 
-			// @ts-ignore
+			// @ts-expect-error
 			player.addListener("authentication_error", ({ message }) => {
 				console.error(message);
 			});
 
-			// @ts-ignore
+			// @ts-expect-error
 			player.addListener("account_error", ({ message }) => {
 				console.error(message);
 			});
@@ -116,22 +118,22 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 			setPlayer(player);
 
 			// so the cleanup function can access the player
-			// @ts-ignore
+			// @ts-expect-error
 			window.player = player;
 		};
 
 		return () => {
-			// @ts-ignore
+			// @ts-expect-error
 			window.player.disconnect();
 		};
-	}, []);
+	}, [accessToken, playlistURI]);
 
 	return (
 		<GameView
 			trackName={trackName}
 			playNextTrack={playNextTrack}
 			albumImageUrl={`${currentTrack?.album.images[0].url}`}
-			setShowTrackName={setShowTrackName}
+			setShowTrackNameTrue={setShowTrackNameTrue}
 			showTrackName={showTrackName}
 		/>
 	);
@@ -171,7 +173,7 @@ async function startPlaylist(
 interface WebPlaybackState {
 	context: {
 		uri: string;
-		metadata: {};
+		metadata: unknown;
 	};
 	disallows: {
 		pausing: boolean;
