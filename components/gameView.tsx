@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -66,7 +67,7 @@ export default function GameView({
 	// runs to start the next guess if the user didn't guess
 	useEffect(() => {
 		if (trackName) {
-			setSongsPlayed(songsPlayed + 1);
+			setSongsPlayed((song) => song + 1);
 		}
 		setCurrentTrackName(trackName);
 		setTimeLeft(20);
@@ -117,7 +118,11 @@ export default function GameView({
 
 			{showTrackName && albumImageUrl ? (
 				<>
-					<img src={`${albumImageUrl}`} className="mb-[20px]" />
+					<Image
+						src={`${albumImageUrl}`}
+						className="mb-[20px]"
+						alt="album image of the song playing"
+					/>
 					<p className="font-semibold text-[20px] text-nowrap text-center">
 						{trackName}
 					</p>
