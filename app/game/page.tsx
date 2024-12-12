@@ -1,6 +1,5 @@
 "use server";
 
-import GameModule from "@/components/gameModule";
 import { getCurrentSession } from "@/lib/mongoose/auth";
 import { redirect } from "next/navigation";
 
@@ -21,10 +20,10 @@ export default async function Game({
 
 	return (
 		<div className="grow bg-[#121212] flex items-center justify-center">
-			<GameModule
+			{/* <GameModule
 				accessToken={session.spotify_access_token}
 				playlistLink={playlist}
-			/>
+			/> */}
 		</div>
 	);
 }
