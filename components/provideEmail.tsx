@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUserEmailAction } from "@/lib/actions/updateUserEmailAction";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 interface Props {
 	isUserRequested: boolean;
@@ -22,7 +22,7 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 			) : (
 				<form
 					action={formAction}
-					className="flex flex-col gap-[32px] mb-[120px]"
+					className="flex flex-col gap-[32px] mb-[120px] justify-center items-center"
 				>
 					<label
 						htmlFor="playlist"
@@ -61,12 +61,10 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 								</svg>
 							</div>
 						)}
-						{state && (
-							<p className="absolute right-[-48px] text-[18px] text-[#ffff] font-semibold">
-								{state}
-							</p>
-						)}
 					</div>
+					{state && (
+						<p className="text-[18px] text-[#ffff]">{state}</p>
+					)}
 				</form>
 			)}
 		</div>
