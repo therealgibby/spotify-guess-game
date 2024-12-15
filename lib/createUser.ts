@@ -18,6 +18,7 @@ export const createUser = cache(
 				_id: newUserId,
 				spotify_id: spotifyId,
 				username: username,
+				can_sign_in: false,
 			});
 			await newUser.save();
 

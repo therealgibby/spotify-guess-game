@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "@/components/navbar";
 import { getCurrentSession } from "@/lib/mongoose/auth";
+import ProvideEmail from "@/components/provideEmail";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -25,6 +26,18 @@ export default async function RootLayout({
 	if (user || session) {
 		isLoggedIn = true;
 		username = user.username;
+		if (!user.can_sign_in) {
+			return (
+				<html lang="en">
+					<body
+						className={`min-h-screen flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
+					>
+						<NavBar isLoggedIn={isLoggedIn} username={username} />
+						<ProvideEmail userEmail={user.email ?? ""} />
+					</body>
+				</html>
+			);
+		}
 	}
 
 	return (

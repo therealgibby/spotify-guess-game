@@ -39,12 +39,20 @@ export const User =
 				type: String,
 				required: true,
 			},
+			email: {
+				type: String,
+				required: false,
+			},
 			spotify_id: {
 				type: String,
 				required: true,
 			},
 			username: {
 				type: String,
+				required: true,
+			},
+			can_sign_in: {
+				type: Boolean,
 				required: true,
 			},
 		})
@@ -80,8 +88,10 @@ export const Session =
 
 export interface IUser {
 	_id: string;
+	email: string;
 	spotify_id: string;
 	username: string;
+	can_sign_in: boolean;
 }
 
 export interface ISession {
