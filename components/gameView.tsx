@@ -122,6 +122,8 @@ export default function GameView({
 						src={`${albumImageUrl}`}
 						className="mb-[20px]"
 						alt="album image of the song playing"
+						width={300}
+						height={300}
 					/>
 					<p className="font-semibold text-[20px] text-nowrap text-center">
 						{`${trackName}`}
