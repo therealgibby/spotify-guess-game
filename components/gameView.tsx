@@ -116,7 +116,7 @@ export default function GameView({
 				</span>
 			)}
 
-			{showTrackName && albumImageUrl ? (
+			{showTrackName ? (
 				<>
 					<Image
 						src={`${albumImageUrl}`}
