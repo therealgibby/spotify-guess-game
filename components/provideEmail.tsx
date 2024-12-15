@@ -1,7 +1,7 @@
 "use client";
 
 import { updateUserEmailAction } from "@/lib/actions/updateUserEmailAction";
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 
 interface Props {
 	isUserRequested: boolean;
