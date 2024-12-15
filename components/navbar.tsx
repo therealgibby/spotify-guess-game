@@ -25,7 +25,7 @@ export default function NavBar({ isLoggedIn, username }: Props) {
 
 	return (
 		<div className="bg-[#242424] h-[80px] flex items-center justify-center">
-			<form action={"/api/auth/spotify/login"} method="POST">
+			<form action={"/api/auth/spotify/login"} method="GET">
 				<button className="font-semibold text-[18px] hover:text-customDarkWhite">
 					Login
 				</button>
