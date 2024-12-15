@@ -38,14 +38,22 @@ export async function GET(request: NextRequest): Promise<Response> {
 		});
 	}
 
-	const spotifyUserResponse = await fetch("https://api.spotify.com/v1/me", {
+	const spotifyUserJson = await fetch("https://api.spotify.com/v1/me", {
 		headers: {
 			Authorization: `Bearer ${tokens.accessToken()}`,
 		},
-	});
-	const spotifyUser = await spotifyUserResponse.json();
-	const spotifyUserId = spotifyUser.id;
-	const spotifyUsername = spotifyUser.display_name;
+	})
+		.then((response) => {
+			if (response.ok) return response.json();
+			return response.json().then((json) => Promise.reject(json));
+		})
+		.catch((error) => {
+			console.log(error);
+			return null;
+		});
+
+	const spotifyUserId = spotifyUserJson.id;
+	const spotifyUsername = spotifyUserJson.display_name;
 
 	// TODO: Replace this with your own DB query.
 	const existingUser = await getUserBySpotifyId(spotifyUserId);
