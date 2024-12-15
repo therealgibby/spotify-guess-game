@@ -4,10 +4,10 @@ import { updateUserEmailAction } from "@/lib/actions/updateUserEmailAction";
 import { useActionState } from "react";
 
 interface Props {
-	userEmail?: string;
+	isUserRequested: boolean;
 }
 
-export default function ProvideEmail({ userEmail }: Props) {
+export default function ProvideEmail({ isUserRequested }: Props) {
 	const [state, formAction, isPending] = useActionState(
 		updateUserEmailAction,
 		""
@@ -17,7 +17,7 @@ export default function ProvideEmail({ userEmail }: Props) {
 
 	return (
 		<div className="grow bg-[#121212] flex items-center justify-center">
-			{userEmail ? (
+			{isUserRequested ? (
 				<p className="text-[18px] text-[#ffff] font-bold">
 					You have requested access. Please wait to be accepted.
 				</p>

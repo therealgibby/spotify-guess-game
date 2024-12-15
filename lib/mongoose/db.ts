@@ -88,7 +88,7 @@ export const Session =
 
 export interface IUser {
 	_id: string;
-	email: string;
+	email?: string;
 	spotify_id: string;
 	username: string;
 	can_sign_in: boolean;

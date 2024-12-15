@@ -1,3 +1,5 @@
+"use server";
+
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "@/components/navbar";
@@ -27,13 +29,17 @@ export default async function RootLayout({
 		isLoggedIn = true;
 		username = user.username;
 		if (!user.can_sign_in) {
+			let isUserRequested = false;
+			if (user.email) {
+				isUserRequested = true;
+			}
 			return (
 				<html lang="en">
 					<body
 						className={`min-h-screen flex flex-col ${geistSans.variable} ${geistMono.variable} antialiased`}
 					>
 						<NavBar isLoggedIn={isLoggedIn} username={username} />
-						<ProvideEmail userEmail={user.email ?? ""} />
+						<ProvideEmail isUserRequested={isUserRequested} />
 					</body>
 				</html>
 			);
