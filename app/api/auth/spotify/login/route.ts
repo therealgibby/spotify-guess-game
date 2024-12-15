@@ -1,8 +1,9 @@
 import { spotify } from "@/lib/oauth/spotify";
 import { generateState } from "arctic";
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
-export async function GET(): Promise<Response> {
+export async function GET(request: NextRequest): Promise<Response> {
 	const state = generateState();
 
 	const url = spotify.createAuthorizationURL(state, [

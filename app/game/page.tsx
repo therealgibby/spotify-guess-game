@@ -4,7 +4,7 @@ import GameModule from "@/components/gameModule";
 import { getCurrentSession } from "@/lib/mongoose/auth";
 import { redirect } from "next/navigation";
 
-export default async function Game({
+export default async function GamePage({
 	searchParams,
 }: {
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

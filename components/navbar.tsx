@@ -1,3 +1,5 @@
+"use client";
+
 interface Props {
 	isLoggedIn: boolean;
 	username?: string;
@@ -25,11 +27,12 @@ export default function NavBar({ isLoggedIn, username }: Props) {
 
 	return (
 		<div className="bg-[#242424] h-[80px] flex items-center justify-center">
-			<form action={"/api/auth/spotify/login"} method="GET">
-				<button className="font-semibold text-[18px] hover:text-customDarkWhite">
-					Login
-				</button>
-			</form>
+			<a
+				href="/api/auth/spotify/login"
+				className="font-semibold text-[18px] hover:text-customDarkWhite"
+			>
+				Login
+			</a>
 		</div>
 	);
 }
