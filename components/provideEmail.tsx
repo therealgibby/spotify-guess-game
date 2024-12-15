@@ -22,7 +22,7 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 			) : (
 				<form
 					action={formAction}
-					className="flex flex-col gap-[32px] mb-[120px] justify-center items-center"
+					className="relative flex flex-col gap-[32px] mb-[120px] justify-center items-center"
 				>
 					<label
 						htmlFor="playlist"
@@ -63,7 +63,9 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 						)}
 					</div>
 					{state && (
-						<p className="text-[18px] text-[#ffff]">{state}</p>
+						<p className="absolute text-[18px] text-[#ffff] bottom-[-52px]">
+							{state}
+						</p>
 					)}
 				</form>
 			)}
