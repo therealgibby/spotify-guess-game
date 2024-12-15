@@ -5,7 +5,7 @@ import { getCurrentSession } from "../mongoose/auth";
 import { updateUserEmail } from "../updateUserEmail";
 
 export async function updateUserEmailAction(
-	currentState: any,
+	currentState: string,
 	formData: FormData
 ): Promise<string> {
 	const { user, session } = await getCurrentSession();
