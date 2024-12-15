@@ -61,7 +61,6 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		window.onSpotifyWebPlaybackSDKReady = () => {
-			const token = `${accessToken}`;
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			const player = new Spotify.Player({
@@ -69,7 +68,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				getOAuthToken: (cb) => {
-					cb(token);
+					cb(accessToken);
 				},
 				volume: 0.05,
 			});
@@ -80,7 +79,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 				console.log("Ready with Device ID", device_id);
 				player.getCurrentState().then((state: WebPlaybackState) => {
 					if (!state?.track_window) {
-						startPlaylist(device_id, accessToken, playlistURI);
+						startPlaylist(device_id, playlistURI);
 					}
 				});
 			});
@@ -163,11 +162,7 @@ function getPlaylistURI(playlistLink: string) {
 	return "";
 }
 
-async function startPlaylist(
-	deviceId: string,
-	accessToken: string,
-	playlistURI: string
-) {
+async function startPlaylist(deviceId: string, playlistURI: string) {
 	const startPlaylistResponse = await fetch("/api/spotify/playlist/play", {
 		method: "POST",
 		headers: {
@@ -175,7 +170,6 @@ async function startPlaylist(
 		},
 		body: JSON.stringify({
 			device_id: `${deviceId}`,
-			access_token: `${accessToken}`,
 			playlist_uri: `${playlistURI}`,
 		}),
 	});

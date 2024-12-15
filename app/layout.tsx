@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import NavBar from "@/components/navbar";
@@ -14,11 +13,6 @@ const geistMono = localFont({
 	variable: "--font-geist-mono",
 	weight: "100 900",
 });
-
-export const metadata: Metadata = {
-	title: "Song-Guess",
-	description: "Paste a Spotify playlist link and guess the song names.",
-};
 
 export default async function RootLayout({
 	children,

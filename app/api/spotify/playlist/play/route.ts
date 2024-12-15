@@ -4,7 +4,6 @@ import { NextRequest } from "next/server";
 
 type RequestJson = {
 	device_id: string;
-	access_token: string;
 	playlist_uri: string;
 };
 
@@ -23,7 +22,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 			{
 				method: "GET",
 				headers: {
-					Authorization: `Bearer ${requestJson.access_token}`,
+					Authorization: `Bearer ${session.spotify_access_token}`,
 				},
 			}
 		);
@@ -39,7 +38,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 			{
 				method: "PUT",
 				headers: {
-					Authorization: `Bearer ${requestJson.access_token}`,
+					Authorization: `Bearer ${session.spotify_access_token}`,
 					"Content-Type": "application.json",
 				},
 				body: JSON.stringify({
@@ -59,7 +58,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 			{
 				method: "PUT",
 				headers: {
-					Authorization: `Bearer ${requestJson.access_token}`,
+					Authorization: `Bearer ${session.spotify_access_token}`,
 				},
 			}
 		);
