@@ -13,6 +13,8 @@ export default function ProvideEmail({ userEmail }: Props) {
 		""
 	);
 
+	console.log(state);
+
 	return (
 		<div className="grow bg-[#121212] flex items-center justify-center">
 			{userEmail ? (
