@@ -13,8 +13,6 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 		""
 	);
 
-	console.log(state);
-
 	return (
 		<div className="grow bg-[#121212] flex items-center justify-center">
 			{isUserRequested ? (
@@ -62,6 +60,11 @@ export default function ProvideEmail({ isUserRequested }: Props) {
 									/>
 								</svg>
 							</div>
+						)}
+						{state && (
+							<p className="absolute right-[-48px] text-[18px] text-[#ffff] font-semibold">
+								{state}
+							</p>
 						)}
 					</div>
 				</form>
