@@ -8,8 +8,8 @@ Spotify Premium is required to use the Web Playback SDK. User's must be given ac
 
 ## Built With
 
--   [Next](http://www.dropwizard.io/1.0.2/docs/) - Web Framework
--   [Tailwind](https://maven.apache.org/) - CSS Framework
--   [Oslo](https://rometools.github.io/rome/) - Auth Tools for ID Creation/Hashing
--   [Arctic](https://rometools.github.io/rome/) - OAuth 2.0 Authorization
--   [Mongoose](https://rometools.github.io/rome/) - MongoDB Object Modeling
+-   [Next](https://nextjs.org/) - Web Framework
+-   [Tailwind](https://tailwindcss.com/) - CSS Framework
+-   [Oslo](https://oslojs.dev/) - Auth Tools for ID Creation/Hashing
+-   [Arctic](https://arcticjs.dev/) - OAuth 2.0 Authorization
+-   [Mongoose](https://mongoosejs.com/) - MongoDB Object Modeling
