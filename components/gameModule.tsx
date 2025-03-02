@@ -134,7 +134,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 			// @ts-ignore
 			window.player.disconnect();
 		};
-	}, []);
+	}, [accessToken, playlistURI]);
 
 	return (
 		<GameView

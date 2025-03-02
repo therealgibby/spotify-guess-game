@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
 	trackName: string;
@@ -20,12 +20,11 @@ export default function GameView({
 	albumImageUrl,
 }: Props) {
 	const router = useRouter();
+	const timeoutFunctionId = useRef<NodeJS.Timeout>();
 	const [timeLeft, setTimeLeft] = useState(20);
 	const [songsPlayed, setSongsPlayed] = useState(0);
 	const [score, setScore] = useState(0);
 	const [isGuessingPaused, setIsGuessingPaused] = useState(false);
-	const [currentTrackName, setCurrentTrackName] = useState(trackName);
-	const [timeoutFunctionId, setTimeoutFunctionId] = useState(0);
 
 	// ends the current guess and clears the automatic timeout
 	async function handleGuess(inputElement: HTMLInputElement, guess: string) {
@@ -34,7 +33,7 @@ export default function GameView({
 			!isGuessingPaused
 		) {
 			inputElement.value = "";
-			clearTimeout(timeoutFunctionId);
+			clearTimeout(timeoutFunctionId.current);
 			setIsGuessingPaused(true);
 			revealTrackName();
 			setScore(score + 1);
@@ -63,15 +62,13 @@ export default function GameView({
 		return () => clearInterval(intervalId);
 	}, [timeLeft]);
 
-	// runs to start the next guess if the user didn't guess
+	// starts next song
 	useEffect(() => {
 		if (trackName) {
 			setSongsPlayed((song) => song + 1);
-		}
-		setCurrentTrackName(trackName);
-		setTimeLeft(20);
-		if (trackName) {
-			const timeoutFuncId = setTimeout(() => {
+			setTimeLeft(20);
+
+			timeoutFunctionId.current = setTimeout(() => {
 				setIsGuessingPaused(true);
 				revealTrackName();
 
@@ -84,10 +81,8 @@ export default function GameView({
 					setIsGuessingPaused(false);
 				}, 5300);
 			}, 20000);
-
-			setTimeoutFunctionId(timeoutFuncId as unknown as number);
 		}
-	}, [trackName]);
+	}, [trackName, playNextTrack, revealTrackName]);
 
 	useEffect(() => {
 		if (songsPlayed > 20) {
@@ -97,7 +92,7 @@ export default function GameView({
 
 	return (
 		<div className="w-[300px] flex flex-col justify-center items-center">
-			{!isGuessingPaused && currentTrackName ? (
+			{!isGuessingPaused && trackName ? (
 				<>
 					{timeLeft < 10 ? (
 						<span className="font-semibold text-[18px] text-fadedText mb-[8px]">
