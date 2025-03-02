@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import GameView from "./gameView";
 
 interface Props {
@@ -9,8 +9,7 @@ interface Props {
 }
 
 export default function GameModule({ accessToken, playlistLink }: Props) {
-	const [player, setPlayer] = useState(null);
-	const [trackName, setTrackName] = useState("");
+	const webPlayer = useRef(null);
 	const [currentTrack, setCurrentTrack] = useState<WebPlaybackTrack | null>(
 		null
 	);
@@ -18,26 +17,25 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 	const playlistURI = getPlaylistURI(playlistLink);
 
 	const playNextTrack = useCallback(() => {
-		if (player) {
+		if (webPlayer.current) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
-			player.nextTrack().then(() => {
+			webPlayer.current.nextTrack().then(() => {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				player.setVolume(0);
 			});
 		}
-	}, [player]);
+	}, []);
 
-	const setShowTrackNameTrue = useCallback(() => {
+	const revealTrackName = useCallback(() => {
 		setShowTrackName(true);
-	}, [setShowTrackName]);
+	}, []);
 
 	function seekCurrentTrack(track: WebPlaybackTrack) {
-		if (player && track) {
+		if (webPlayer.current && track) {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
-			player.seek(
+			webPlayer.current.seek(
 				Math.floor(Math.random() * (track.duration_ms - 30000))
 			);
 		}
@@ -92,9 +90,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 					}
 
 					if (state.position >= 0 && state.position <= 1000) {
-						setTrackName(state.track_window.current_track.name);
 						setCurrentTrack(state.track_window.current_track);
-						player.setVolume(0.05);
 					}
 				}
 			);
@@ -125,7 +121,7 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 			player.connect();
 
-			setPlayer(player);
+			webPlayer.current = player;
 
 			// so the cleanup function can access the player
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -142,10 +138,10 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	return (
 		<GameView
-			trackName={trackName}
+			trackName={currentTrack?.name ?? ""}
 			playNextTrack={playNextTrack}
 			albumImageUrl={`${currentTrack?.album.images[0].url}`}
-			setShowTrackNameTrue={setShowTrackNameTrue}
+			revealTrackName={revealTrackName}
 			showTrackName={showTrackName}
 		/>
 	);

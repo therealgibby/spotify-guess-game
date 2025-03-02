@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 interface Props {
 	trackName: string;
 	playNextTrack: () => void;
-	setShowTrackNameTrue: () => void;
+	revealTrackName: () => void;
 	showTrackName: boolean;
 	albumImageUrl: string;
 }
@@ -15,7 +15,7 @@ interface Props {
 export default function GameView({
 	trackName,
 	playNextTrack,
-	setShowTrackNameTrue,
+	revealTrackName,
 	showTrackName,
 	albumImageUrl,
 }: Props) {
@@ -23,22 +23,21 @@ export default function GameView({
 	const [timeLeft, setTimeLeft] = useState(20);
 	const [songsPlayed, setSongsPlayed] = useState(0);
 	const [score, setScore] = useState(0);
-	const [input, setInput] = useState("");
 	const [isGuessingPaused, setIsGuessingPaused] = useState(false);
 	const [currentTrackName, setCurrentTrackName] = useState(trackName);
 	const [timeoutFunctionId, setTimeoutFunctionId] = useState(0);
 
 	// ends the current guess and clears the automatic timeout
-	async function handleGuess(guess: string) {
+	async function handleGuess(inputElement: HTMLInputElement, guess: string) {
 		if (
 			cleanTrackName(guess, true) == cleanTrackName(trackName, true) &&
 			!isGuessingPaused
 		) {
+			inputElement.value = "";
 			clearTimeout(timeoutFunctionId);
 			setIsGuessingPaused(true);
-			setShowTrackNameTrue();
+			revealTrackName();
 			setScore(score + 1);
-			setInput("");
 
 			setTimeout(() => {
 				playNextTrack();
@@ -74,7 +73,7 @@ export default function GameView({
 		if (trackName) {
 			const timeoutFuncId = setTimeout(() => {
 				setIsGuessingPaused(true);
-				setShowTrackNameTrue();
+				revealTrackName();
 
 				setTimeout(() => {
 					playNextTrack();
@@ -88,7 +87,7 @@ export default function GameView({
 
 			setTimeoutFunctionId(timeoutFuncId as unknown as number);
 		}
-	}, [trackName, playNextTrack, setShowTrackNameTrue]);
+	}, [trackName]);
 
 	useEffect(() => {
 		if (songsPlayed > 20) {
@@ -145,10 +144,8 @@ export default function GameView({
 			)}
 			<input
 				className="bg-[#242424] w-full block px-[12px] py-[8px] rounded-[10px] text-[18px] text-[#ffff] placeholder:text-[#eeeeee80] outline-none"
-				value={input}
 				onChange={(event) => {
-					setInput(event.target.value);
-					handleGuess(event.target.value);
+					handleGuess(event.target, event.target.value);
 				}}
 			/>
 			<span className="font-semibold text-[18px] mt-[12px]">
@@ -158,6 +155,11 @@ export default function GameView({
 	);
 }
 
+/*
+	Removes unnecessary words from Spotify song title
+	If isForGuess == true, it removes spaces from the string
+	All for an easier guess
+*/
 function cleanTrackName(trackName: string, isForGuess = false): string {
 	if (!trackName) {
 		return "";
@@ -165,35 +167,18 @@ function cleanTrackName(trackName: string, isForGuess = false): string {
 
 	trackName = trackName.toLowerCase();
 
-	if (trackName.includes("(") && trackName.includes(")")) {
-		if (trackName.indexOf("(") === 0) {
-			trackName = trackName.slice(trackName.indexOf(")") + 1);
-		} else {
-			trackName = trackName.slice(0, trackName.lastIndexOf("("));
-		}
-	}
-
-	while (
-		(trackName.includes("remaster") ||
-			trackName.includes("live") ||
-			trackName.includes("acoustic") ||
-			trackName.includes("remix") ||
-			trackName.includes("with") ||
-			trackName.includes("radio") ||
-			trackName.includes("edit") ||
-			trackName.includes("mix") ||
-			trackName.includes("version")) &&
-		trackName.includes("-")
-	) {
-		const lastHyphen = trackName.lastIndexOf("-");
-		trackName = trackName.slice(0, lastHyphen);
-	}
+	trackName = trackName
+		.replace(
+			/\s*-\s*\d*\s*(remaster(?:ed)?|live|acoustic|remix|with|radio|edit|mix|version)\b.*/gi,
+			""
+		) // Remove unwanted words with preceding '-'
+		.replace(/\s*\(([^)]*)\)/g, "") // Remove parenthesis and contents
+		.replace(/\s*&\s*/g, " and ") // Replace "&" with "and"
+		.trim();
 
 	if (isForGuess) {
 		trackName = trackName.replace(/[^a-zA-Z0-9]/g, "");
 	}
-
-	trackName = trackName.trim();
 
 	return trackName;
 }
@@ -212,7 +197,6 @@ function getTrackBlanks(trackName: string): string {
 			blanks += "\xa0\xa0";
 		} else if (
 			c === "-" ||
-			c === "&" ||
 			c === "?" ||
 			c === "." ||
 			c === "!" ||
@@ -221,6 +205,8 @@ function getTrackBlanks(trackName: string): string {
 			c === ","
 		) {
 			blanks += `${c} `;
+		} else if (c === "&") {
+			blanks += "_ _ _ ";
 		} else {
 			blanks += "_ ";
 		}

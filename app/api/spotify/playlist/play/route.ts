@@ -7,6 +7,10 @@ type RequestJson = {
 	playlist_uri: string;
 };
 
+function sleep(timeMs: number) {
+	return new Promise((resolve) => setTimeout(resolve, timeMs));
+}
+
 export async function POST(request: NextRequest): Promise<Response> {
 	const { user, session } = await getCurrentSession();
 	if (!user || !session) {
@@ -52,6 +56,9 @@ export async function POST(request: NextRequest): Promise<Response> {
 		);
 
 		console.log(playPlaylistResponse.status);
+
+		// bad fix but shuffle can only be enabled after song starts playing
+		await sleep(250);
 
 		const enableShuffleResponse = await fetch(
 			`https://api.spotify.com/v1/me/player/shuffle?state=true&device_id=${requestJson.device_id}`,
