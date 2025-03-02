@@ -43,8 +43,8 @@ export default function GameModule({ accessToken, playlistLink }: Props) {
 
 	useEffect(() => {
 		if (currentTrack) {
-			seekCurrentTrack(currentTrack);
 			setShowTrackName(false);
+			seekCurrentTrack(currentTrack);
 		}
 	}, [currentTrack]);
 
