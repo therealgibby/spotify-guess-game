@@ -19,6 +19,12 @@ export async function POST(request: NextRequest): Promise<Response> {
 
 	try {
 		const requestJson: RequestJson = await request.json();
+		if (
+			typeof requestJson.device_id !== "string" ||
+			typeof requestJson.playlist_uri !== "string"
+		) {
+			return redirect("/");
+		}
 
 		// get playlist details
 		const playlistDetailsResponse = await fetch(
@@ -31,7 +37,9 @@ export async function POST(request: NextRequest): Promise<Response> {
 			}
 		);
 
-		console.log(playlistDetailsResponse.status);
+		if (!playlistDetailsResponse.ok) {
+			return redirect("/");
+		}
 
 		const playlistDetails = await playlistDetailsResponse.json();
 		const totalTracks = playlistDetails.tracks.total;
@@ -55,7 +63,9 @@ export async function POST(request: NextRequest): Promise<Response> {
 			}
 		);
 
-		console.log(playPlaylistResponse.status);
+		if (!playPlaylistResponse.ok) {
+			return redirect("/");
+		}
 
 		// bad fix but shuffle can only be enabled after song starts playing
 		await sleep(250);
@@ -70,11 +80,13 @@ export async function POST(request: NextRequest): Promise<Response> {
 			}
 		);
 
-		console.log(enableShuffleResponse.status);
+		if (!enableShuffleResponse.ok) {
+			return redirect("/");
+		}
 
 		return new Response(null, { status: 200 });
 	} catch (error) {
 		console.log(error);
-		return new Response(null, { status: 500 });
+		return redirect("/");
 	}
 }
