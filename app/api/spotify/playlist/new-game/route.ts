@@ -14,5 +14,12 @@ export async function POST(request: NextRequest) {
 		return redirect("/");
 	}
 
+	const spotifyPlaylistRegex =
+		/^(?:https:\/\/open\.spotify\.com\/playlist\/[a-zA-Z0-9]+(?:\?.*)?|spotify:playlist:[a-zA-Z0-9]+)$/;
+
+	if (!spotifyPlaylistRegex.test(playlistLink.toString())) {
+		return redirect("/");
+	}
+
 	return redirect(`/game?playlist=${playlistLink}`);
 }
