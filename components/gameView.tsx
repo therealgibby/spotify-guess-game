@@ -164,12 +164,12 @@ function cleanTrackName(trackName: string, isForGuess = false): string {
 
 	trackName = trackName
 		.replace(
-			/\s*-\s*\d*\s*(remaster(?:ed)?|live|acoustic|remix|with|radio|edit|mix|version)\b.*/gi,
+			/\s*-\s*(\d*\s*)?(remaster(?:ed)?|live|acoustic|remix|with|radio|edit|mix|version)\b.*/gi,
 			""
-		) // Remove unwanted words with preceding '-'
-		.replace(/\s*\(([^)]*)\)/g, "") // Remove parenthesis and contents
+		) // Remove unwanted words & everything after
+		.replace(/\s*\([^)]*\)/g, "") // Remove parentheses and contents
 		.replace(/\s*&\s*/g, " and ") // Replace "&" with "and"
-		.trim();
+		.trim(); // Trim extra spaces
 
 	if (isForGuess) {
 		trackName = trackName.replace(/[^a-zA-Z0-9]/g, "");
